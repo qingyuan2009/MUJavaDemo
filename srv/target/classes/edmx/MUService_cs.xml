@@ -1,0 +1,636 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="4.0" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
+  <edmx:Reference Uri="https://sap.github.io/odata-vocabularies/vocabularies/Common.xml">
+    <edmx:Include Alias="Common" Namespace="com.sap.vocabularies.Common.v1"/>
+  </edmx:Reference>
+  <edmx:Reference Uri="https://oasis-tcs.github.io/odata-vocabularies/vocabularies/Org.OData.Core.V1.xml">
+    <edmx:Include Alias="Core" Namespace="Org.OData.Core.V1"/>
+  </edmx:Reference>
+  <edmx:Reference Uri="https://sap.github.io/odata-vocabularies/vocabularies/UI.xml">
+    <edmx:Include Alias="UI" Namespace="com.sap.vocabularies.UI.v1"/>
+  </edmx:Reference>
+  <edmx:DataServices>
+    <Schema Namespace="MUService" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+      <EntityContainer Name="EntityContainer">
+        <EntitySet Name="MarketUnits" EntityType="MUService.MarketUnits">
+          <NavigationPropertyBinding Path="dc" Target="DistributionCenters"/>
+          <NavigationPropertyBinding Path="store" Target="Stores"/>
+          <NavigationPropertyBinding Path="SiblingEntity" Target="MarketUnits"/>
+        </EntitySet>
+        <EntitySet Name="DistributionCenters" EntityType="MUService.DistributionCenters">
+          <NavigationPropertyBinding Path="SiblingEntity" Target="DistributionCenters"/>
+        </EntitySet>
+        <EntitySet Name="Stores" EntityType="MUService.Stores">
+          <NavigationPropertyBinding Path="SiblingEntity" Target="Stores"/>
+        </EntitySet>
+      </EntityContainer>
+      <EntityType Name="MarketUnits">
+        <Key>
+          <PropertyRef Name="ID"/>
+          <PropertyRef Name="IsActiveEntity"/>
+        </Key>
+        <Property Name="createdAt" Type="Edm.DateTimeOffset" Precision="7"/>
+        <Property Name="createdBy" Type="Edm.String" MaxLength="255"/>
+        <Property Name="modifiedAt" Type="Edm.DateTimeOffset" Precision="7"/>
+        <Property Name="modifiedBy" Type="Edm.String" MaxLength="255"/>
+        <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
+        <Property Name="name" Type="Edm.String" MaxLength="100"/>
+        <Property Name="scenarios" Type="Edm.String" MaxLength="30"/>
+        <Property Name="prodHier" Type="Edm.String"/>
+        <NavigationProperty Name="dc" Type="MUService.DistributionCenters">
+          <ReferentialConstraint Property="dc_ID" ReferencedProperty="ID"/>
+        </NavigationProperty>
+        <Property Name="dc_ID" Type="Edm.Guid"/>
+        <NavigationProperty Name="store" Type="MUService.Stores">
+          <ReferentialConstraint Property="store_ID" ReferencedProperty="ID"/>
+        </NavigationProperty>
+        <Property Name="store_ID" Type="Edm.Guid"/>
+        <Property Name="IsActiveEntity" Type="Edm.Boolean" Nullable="false" DefaultValue="true"/>
+        <Property Name="HasActiveEntity" Type="Edm.Boolean" Nullable="false" DefaultValue="false"/>
+        <Property Name="HasDraftEntity" Type="Edm.Boolean" Nullable="false" DefaultValue="false"/>
+        <NavigationProperty Name="DraftAdministrativeData" Type="MUService.DraftAdministrativeData" ContainsTarget="true"/>
+        <NavigationProperty Name="SiblingEntity" Type="MUService.MarketUnits"/>
+      </EntityType>
+      <EntityType Name="DistributionCenters">
+        <Key>
+          <PropertyRef Name="ID"/>
+          <PropertyRef Name="IsActiveEntity"/>
+        </Key>
+        <Property Name="createdAt" Type="Edm.DateTimeOffset" Precision="7"/>
+        <Property Name="createdBy" Type="Edm.String" MaxLength="255"/>
+        <Property Name="modifiedAt" Type="Edm.DateTimeOffset" Precision="7"/>
+        <Property Name="modifiedBy" Type="Edm.String" MaxLength="255"/>
+        <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
+        <Property Name="name" Type="Edm.String"/>
+        <Property Name="address" Type="Edm.String"/>
+        <Property Name="city" Type="Edm.String"/>
+        <Property Name="region" Type="Edm.String"/>
+        <Property Name="country" Type="Edm.String"/>
+        <Property Name="IsActiveEntity" Type="Edm.Boolean" Nullable="false" DefaultValue="true"/>
+        <Property Name="HasActiveEntity" Type="Edm.Boolean" Nullable="false" DefaultValue="false"/>
+        <Property Name="HasDraftEntity" Type="Edm.Boolean" Nullable="false" DefaultValue="false"/>
+        <NavigationProperty Name="DraftAdministrativeData" Type="MUService.DraftAdministrativeData" ContainsTarget="true"/>
+        <NavigationProperty Name="SiblingEntity" Type="MUService.DistributionCenters"/>
+      </EntityType>
+      <EntityType Name="Stores">
+        <Key>
+          <PropertyRef Name="ID"/>
+          <PropertyRef Name="IsActiveEntity"/>
+        </Key>
+        <Property Name="createdAt" Type="Edm.DateTimeOffset" Precision="7"/>
+        <Property Name="createdBy" Type="Edm.String" MaxLength="255"/>
+        <Property Name="modifiedAt" Type="Edm.DateTimeOffset" Precision="7"/>
+        <Property Name="modifiedBy" Type="Edm.String" MaxLength="255"/>
+        <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
+        <Property Name="name" Type="Edm.String"/>
+        <Property Name="address" Type="Edm.String"/>
+        <Property Name="city" Type="Edm.String"/>
+        <Property Name="region" Type="Edm.String"/>
+        <Property Name="country" Type="Edm.String"/>
+        <Property Name="IsActiveEntity" Type="Edm.Boolean" Nullable="false" DefaultValue="true"/>
+        <Property Name="HasActiveEntity" Type="Edm.Boolean" Nullable="false" DefaultValue="false"/>
+        <Property Name="HasDraftEntity" Type="Edm.Boolean" Nullable="false" DefaultValue="false"/>
+        <NavigationProperty Name="DraftAdministrativeData" Type="MUService.DraftAdministrativeData" ContainsTarget="true"/>
+        <NavigationProperty Name="SiblingEntity" Type="MUService.Stores"/>
+      </EntityType>
+      <EntityType Name="DraftAdministrativeData">
+        <Key>
+          <PropertyRef Name="DraftUUID"/>
+        </Key>
+        <Property Name="DraftUUID" Type="Edm.Guid" Nullable="false"/>
+        <Property Name="CreationDateTime" Type="Edm.DateTimeOffset" Precision="7"/>
+        <Property Name="CreatedByUser" Type="Edm.String" MaxLength="256"/>
+        <Property Name="DraftIsCreatedByMe" Type="Edm.Boolean"/>
+        <Property Name="LastChangeDateTime" Type="Edm.DateTimeOffset" Precision="7"/>
+        <Property Name="LastChangedByUser" Type="Edm.String" MaxLength="256"/>
+        <Property Name="InProcessByUser" Type="Edm.String" MaxLength="256"/>
+        <Property Name="DraftIsProcessedByMe" Type="Edm.Boolean"/>
+      </EntityType>
+      <Action Name="draftPrepare" IsBound="true" EntitySetPath="in">
+        <Parameter Name="in" Type="MUService.MarketUnits"/>
+        <Parameter Name="SideEffectsQualifier" Type="Edm.String"/>
+        <ReturnType Type="MUService.MarketUnits"/>
+      </Action>
+      <Action Name="draftPrepare" IsBound="true" EntitySetPath="in">
+        <Parameter Name="in" Type="MUService.DistributionCenters"/>
+        <Parameter Name="SideEffectsQualifier" Type="Edm.String"/>
+        <ReturnType Type="MUService.DistributionCenters"/>
+      </Action>
+      <Action Name="draftPrepare" IsBound="true" EntitySetPath="in">
+        <Parameter Name="in" Type="MUService.Stores"/>
+        <Parameter Name="SideEffectsQualifier" Type="Edm.String"/>
+        <ReturnType Type="MUService.Stores"/>
+      </Action>
+      <Action Name="draftActivate" IsBound="true" EntitySetPath="in">
+        <Parameter Name="in" Type="MUService.MarketUnits"/>
+        <ReturnType Type="MUService.MarketUnits"/>
+      </Action>
+      <Action Name="draftActivate" IsBound="true" EntitySetPath="in">
+        <Parameter Name="in" Type="MUService.DistributionCenters"/>
+        <ReturnType Type="MUService.DistributionCenters"/>
+      </Action>
+      <Action Name="draftActivate" IsBound="true" EntitySetPath="in">
+        <Parameter Name="in" Type="MUService.Stores"/>
+        <ReturnType Type="MUService.Stores"/>
+      </Action>
+      <Action Name="draftEdit" IsBound="true" EntitySetPath="in">
+        <Parameter Name="in" Type="MUService.MarketUnits"/>
+        <Parameter Name="PreserveChanges" Type="Edm.Boolean"/>
+        <ReturnType Type="MUService.MarketUnits"/>
+      </Action>
+      <Action Name="draftEdit" IsBound="true" EntitySetPath="in">
+        <Parameter Name="in" Type="MUService.DistributionCenters"/>
+        <Parameter Name="PreserveChanges" Type="Edm.Boolean"/>
+        <ReturnType Type="MUService.DistributionCenters"/>
+      </Action>
+      <Action Name="draftEdit" IsBound="true" EntitySetPath="in">
+        <Parameter Name="in" Type="MUService.Stores"/>
+        <Parameter Name="PreserveChanges" Type="Edm.Boolean"/>
+        <ReturnType Type="MUService.Stores"/>
+      </Action>
+      <Annotations Target="MUService.MarketUnits">
+        <Annotation Term="UI.HeaderInfo">
+          <Record Type="UI.HeaderInfoType">
+            <PropertyValue Property="TypeName" String="MarketUnit"/>
+            <PropertyValue Property="TypeNamePlural" String="MarketUnits"/>
+            <PropertyValue Property="Title">
+              <Record Type="UI.DataField">
+                <PropertyValue Property="Value" Path="name"/>
+              </Record>
+            </PropertyValue>
+            <PropertyValue Property="Description">
+              <Record Type="UI.DataField">
+                <PropertyValue Property="Value" Path="name"/>
+              </Record>
+            </PropertyValue>
+          </Record>
+        </Annotation>
+        <Annotation Term="UI.Identification">
+          <Collection>
+            <Record Type="UI.DataField">
+              <PropertyValue Property="Value" Path="name"/>
+            </Record>
+            <Record Type="UI.DataFieldForAction">
+              <PropertyValue Property="Label" String="Add Review"/>
+              <PropertyValue Property="Action" String="MUService.addReview"/>
+            </Record>
+          </Collection>
+        </Annotation>
+        <Annotation Term="UI.PresentationVariant">
+          <Record Type="UI.PresentationVariantType">
+            <PropertyValue Property="Text" String="Default"/>
+            <PropertyValue Property="SortOrder">
+              <Collection>
+                <Record Type="Common.SortOrderType">
+                  <PropertyValue Property="Property" PropertyPath="name"/>
+                </Record>
+              </Collection>
+            </PropertyValue>
+            <PropertyValue Property="Visualizations">
+              <Collection>
+                <AnnotationPath>@UI.LineItem</AnnotationPath>
+              </Collection>
+            </PropertyValue>
+          </Record>
+        </Annotation>
+        <Annotation Term="UI.SelectionFields">
+          <Collection>
+            <PropertyPath>name</PropertyPath>
+          </Collection>
+        </Annotation>
+        <Annotation Term="UI.HeaderFacets">
+          <Collection/>
+        </Annotation>
+        <Annotation Term="UI.LineItem">
+          <Collection>
+            <Record Type="UI.DataField">
+              <PropertyValue Property="Value" Path="name"/>
+            </Record>
+            <Record Type="UI.DataField">
+              <PropertyValue Property="Value" Path="scenarios"/>
+              <PropertyValue Property="Label" String="Scenarios"/>
+            </Record>
+            <Record Type="UI.DataField">
+              <PropertyValue Property="Value" Path="prodHier"/>
+              <PropertyValue Property="Label" String="Product Hierarchy"/>
+            </Record>
+            <Record Type="UI.DataField">
+              <PropertyValue Property="Value" Path="dc_ID"/>
+              <PropertyValue Property="Label" String="Distribution Center"/>
+            </Record>
+            <Record Type="UI.DataField">
+              <PropertyValue Property="Value" Path="store_ID"/>
+              <PropertyValue Property="Label" String="Store"/>
+            </Record>
+          </Collection>
+        </Annotation>
+        <Annotation Term="UI.Facets">
+          <Collection>
+            <Record Type="UI.CollectionFacet">
+              <PropertyValue Property="ID" String="collectionBasicInformation"/>
+              <PropertyValue Property="Label" String="Basic Information"/>
+              <PropertyValue Property="Facets">
+                <Collection>
+                  <Record Type="UI.ReferenceFacet">
+                    <PropertyValue Property="Target" AnnotationPath="@UI.FieldGroup#BasicInformation"/>
+                    <PropertyValue Property="ID" String="FieldGroupBasicInformation"/>
+                    <PropertyValue Property="Label" String="Basic Information"/>
+                  </Record>
+                  <Record Type="UI.ReferenceFacet">
+                    <PropertyValue Property="Target" AnnotationPath="@UI.FieldGroup#Scenarios"/>
+                    <PropertyValue Property="ID" String="FieldGroupScenarios"/>
+                    <PropertyValue Property="Label" String="Scenarios"/>
+                  </Record>
+                  <Record Type="UI.ReferenceFacet">
+                    <PropertyValue Property="Target" AnnotationPath="@UI.FieldGroup#ProductHierarchy"/>
+                    <PropertyValue Property="ID" String="FieldGroupProductHierarchy"/>
+                    <PropertyValue Property="Label" String="Product Hierarchy"/>
+                  </Record>
+                </Collection>
+              </PropertyValue>
+            </Record>
+            <Record Type="UI.ReferenceFacet">
+              <PropertyValue Property="Label" String="Locations"/>
+              <PropertyValue Property="Target" AnnotationPath="@UI.FieldGroup#Locations"/>
+            </Record>
+            <Record Type="UI.ReferenceFacet">
+              <PropertyValue Property="Label" String="Responsibilities"/>
+              <PropertyValue Property="Target" AnnotationPath="@UI.FieldGroup#Responsibilities"/>
+            </Record>
+          </Collection>
+        </Annotation>
+        <Annotation Term="UI.FieldGroup" Qualifier="BasicInformation">
+          <Record Type="UI.FieldGroupType">
+            <PropertyValue Property="Data">
+              <Collection>
+                <Record Type="UI.DataField">
+                  <PropertyValue Property="Value" Path="name"/>
+                </Record>
+                <Record Type="UI.DataField">
+                  <PropertyValue Property="Value" Path="dc_ID"/>
+                </Record>
+                <Record Type="UI.DataField">
+                  <PropertyValue Property="Value" Path="store_ID"/>
+                </Record>
+              </Collection>
+            </PropertyValue>
+          </Record>
+        </Annotation>
+        <Annotation Term="UI.FieldGroup" Qualifier="Scenarios">
+          <Record Type="UI.FieldGroupType">
+            <PropertyValue Property="Data">
+              <Collection>
+                <Record Type="UI.DataField">
+                  <PropertyValue Property="Value" Path="scenarios"/>
+                </Record>
+              </Collection>
+            </PropertyValue>
+          </Record>
+        </Annotation>
+        <Annotation Term="UI.FieldGroup" Qualifier="ProductHierarchy">
+          <Record Type="UI.FieldGroupType">
+            <PropertyValue Property="Data">
+              <Collection>
+                <Record Type="UI.DataField">
+                  <PropertyValue Property="Value" Path="prodHier"/>
+                </Record>
+              </Collection>
+            </PropertyValue>
+          </Record>
+        </Annotation>
+        <Annotation Term="UI.FieldGroup" Qualifier="Locations">
+          <Record Type="UI.FieldGroupType">
+            <PropertyValue Property="Data">
+              <Collection>
+                <Record Type="UI.DataField">
+                  <PropertyValue Property="Value" Path="dc/address"/>
+                </Record>
+              </Collection>
+            </PropertyValue>
+          </Record>
+        </Annotation>
+        <Annotation Term="UI.FieldGroup" Qualifier="Responsibilities">
+          <Record Type="UI.FieldGroupType">
+            <PropertyValue Property="Data">
+              <Collection>
+                <Record Type="UI.DataField">
+                  <PropertyValue Property="Value" Path="dc/address"/>
+                </Record>
+              </Collection>
+            </PropertyValue>
+          </Record>
+        </Annotation>
+        <Annotation Term="UI.FieldGroup" Qualifier="Main">
+          <Record Type="UI.FieldGroupType">
+            <PropertyValue Property="Data">
+              <Collection>
+                <Record Type="UI.DataField">
+                  <PropertyValue Property="Value" Path="name"/>
+                </Record>
+                <Record Type="UI.DataField">
+                  <PropertyValue Property="Value" Path="scenarios"/>
+                </Record>
+                <Record Type="UI.DataField">
+                  <PropertyValue Property="Value" Path="prodHier"/>
+                </Record>
+                <Record Type="UI.DataField">
+                  <PropertyValue Property="Value" Path="dc_ID"/>
+                </Record>
+                <Record Type="UI.DataField">
+                  <PropertyValue Property="Value" Path="store_ID"/>
+                </Record>
+              </Collection>
+            </PropertyValue>
+          </Record>
+        </Annotation>
+        <Annotation Term="Core.Description" String="Aspect to capture changes by user and name&#xA;&#xA;See https://cap.cloud.sap/docs/cds/common#aspect-managed"/>
+      </Annotations>
+      <Annotations Target="MUService.EntityContainer/MarketUnits">
+        <Annotation Term="UI.PresentationVariant">
+          <Record Type="UI.PresentationVariantType">
+            <PropertyValue Property="Text" String="Default"/>
+            <PropertyValue Property="SortOrder">
+              <Collection>
+                <Record Type="Common.SortOrderType">
+                  <PropertyValue Property="Property" PropertyPath="name"/>
+                </Record>
+              </Collection>
+            </PropertyValue>
+            <PropertyValue Property="Visualizations">
+              <Collection>
+                <AnnotationPath>@UI.LineItem</AnnotationPath>
+              </Collection>
+            </PropertyValue>
+          </Record>
+        </Annotation>
+        <Annotation Term="Common.DraftRoot">
+          <Record Type="Common.DraftRootType">
+            <PropertyValue Property="ActivationAction" String="MUService.draftActivate"/>
+            <PropertyValue Property="EditAction" String="MUService.draftEdit"/>
+            <PropertyValue Property="PreparationAction" String="MUService.draftPrepare"/>
+          </Record>
+        </Annotation>
+      </Annotations>
+      <Annotations Target="MUService.MarketUnits/createdAt">
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+        <Annotation Term="Core.Immutable" Bool="true"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Common.Label" String="Vytvořeno dne"/>
+      </Annotations>
+      <Annotations Target="MUService.MarketUnits/createdBy">
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+        <Annotation Term="Core.Immutable" Bool="true"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Core.Description" String="Jedinečné ID uživatele"/>
+        <Annotation Term="Common.Label" String="Vytvořil"/>
+      </Annotations>
+      <Annotations Target="MUService.MarketUnits/modifiedAt">
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Common.Label" String="Změněno dne"/>
+      </Annotations>
+      <Annotations Target="MUService.MarketUnits/modifiedBy">
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Core.Description" String="Jedinečné ID uživatele"/>
+        <Annotation Term="Common.Label" String="Autor změny"/>
+      </Annotations>
+      <Annotations Target="MUService.MarketUnits/ID">
+        <Annotation Term="Core.Computed" Bool="true"/>
+      </Annotations>
+      <Annotations Target="MUService.MarketUnits/name">
+        <Annotation Term="Common.Label" String="Name"/>
+      </Annotations>
+      <Annotations Target="MUService.MarketUnits/scenarios">
+        <Annotation Term="Common.Label" String="Scenarios"/>
+      </Annotations>
+      <Annotations Target="MUService.MarketUnits/prodHier">
+        <Annotation Term="Common.Label" String="Product Hierarchy"/>
+      </Annotations>
+      <Annotations Target="MUService.MarketUnits/dc">
+        <Annotation Term="Common.Label" String="Distribution Center"/>
+      </Annotations>
+      <Annotations Target="MUService.MarketUnits/dc_ID">
+        <Annotation Term="Common.Text" Path="dc/name">
+          <Annotation Term="UI.TextArrangement" EnumMember="UI.TextArrangementType/TextOnly"/>
+        </Annotation>
+        <Annotation Term="Common.ValueList">
+          <Record Type="Common.ValueListType">
+            <PropertyValue Property="Label" String="DistributionCenters"/>
+            <PropertyValue Property="CollectionPath" String="DistributionCenters"/>
+            <PropertyValue Property="Parameters">
+              <Collection>
+                <Record Type="Common.ValueListParameterInOut">
+                  <PropertyValue Property="LocalDataProperty" PropertyPath="dc_ID"/>
+                  <PropertyValue Property="ValueListProperty" String="ID"/>
+                </Record>
+                <Record Type="Common.ValueListParameterDisplayOnly">
+                  <PropertyValue Property="ValueListProperty" String="name"/>
+                </Record>
+              </Collection>
+            </PropertyValue>
+          </Record>
+        </Annotation>
+        <Annotation Term="Common.Label" String="Distribution Center"/>
+      </Annotations>
+      <Annotations Target="MUService.MarketUnits/store">
+        <Annotation Term="Common.Label" String="Store"/>
+      </Annotations>
+      <Annotations Target="MUService.MarketUnits/store_ID">
+        <Annotation Term="Common.Text" Path="store/name">
+          <Annotation Term="UI.TextArrangement" EnumMember="UI.TextArrangementType/TextOnly"/>
+        </Annotation>
+        <Annotation Term="Common.ValueList">
+          <Record Type="Common.ValueListType">
+            <PropertyValue Property="Label" String="Stores"/>
+            <PropertyValue Property="CollectionPath" String="Stores"/>
+            <PropertyValue Property="Parameters">
+              <Collection>
+                <Record Type="Common.ValueListParameterInOut">
+                  <PropertyValue Property="LocalDataProperty" PropertyPath="store_ID"/>
+                  <PropertyValue Property="ValueListProperty" String="ID"/>
+                </Record>
+                <Record Type="Common.ValueListParameterDisplayOnly">
+                  <PropertyValue Property="ValueListProperty" String="name"/>
+                </Record>
+              </Collection>
+            </PropertyValue>
+          </Record>
+        </Annotation>
+        <Annotation Term="Common.Label" String="Store"/>
+      </Annotations>
+      <Annotations Target="MUService.MarketUnits/IsActiveEntity">
+        <Annotation Term="UI.Hidden" Bool="true"/>
+      </Annotations>
+      <Annotations Target="MUService.MarketUnits/HasActiveEntity">
+        <Annotation Term="UI.Hidden" Bool="true"/>
+      </Annotations>
+      <Annotations Target="MUService.MarketUnits/HasDraftEntity">
+        <Annotation Term="UI.Hidden" Bool="true"/>
+      </Annotations>
+      <Annotations Target="MUService.MarketUnits/DraftAdministrativeData">
+        <Annotation Term="UI.Hidden" Bool="true"/>
+      </Annotations>
+      <Annotations Target="MUService.DistributionCenters">
+        <Annotation Term="Core.Description" String="Aspect to capture changes by user and name&#xA;&#xA;See https://cap.cloud.sap/docs/cds/common#aspect-managed"/>
+      </Annotations>
+      <Annotations Target="MUService.EntityContainer/DistributionCenters">
+        <Annotation Term="Common.DraftRoot">
+          <Record Type="Common.DraftRootType">
+            <PropertyValue Property="ActivationAction" String="MUService.draftActivate"/>
+            <PropertyValue Property="EditAction" String="MUService.draftEdit"/>
+            <PropertyValue Property="PreparationAction" String="MUService.draftPrepare"/>
+          </Record>
+        </Annotation>
+      </Annotations>
+      <Annotations Target="MUService.DistributionCenters/createdAt">
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+        <Annotation Term="Core.Immutable" Bool="true"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Common.Label" String="Vytvořeno dne"/>
+      </Annotations>
+      <Annotations Target="MUService.DistributionCenters/createdBy">
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+        <Annotation Term="Core.Immutable" Bool="true"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Core.Description" String="Jedinečné ID uživatele"/>
+        <Annotation Term="Common.Label" String="Vytvořil"/>
+      </Annotations>
+      <Annotations Target="MUService.DistributionCenters/modifiedAt">
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Common.Label" String="Změněno dne"/>
+      </Annotations>
+      <Annotations Target="MUService.DistributionCenters/modifiedBy">
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Core.Description" String="Jedinečné ID uživatele"/>
+        <Annotation Term="Common.Label" String="Autor změny"/>
+      </Annotations>
+      <Annotations Target="MUService.DistributionCenters/ID">
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="UI.Hidden" Bool="true"/>
+        <Annotation Term="Common.Text" Path="name"/>
+      </Annotations>
+      <Annotations Target="MUService.DistributionCenters/name">
+        <Annotation Term="Common.Label" String="Name"/>
+      </Annotations>
+      <Annotations Target="MUService.DistributionCenters/city">
+        <Annotation Term="Common.Label" String="City"/>
+      </Annotations>
+      <Annotations Target="MUService.DistributionCenters/region">
+        <Annotation Term="Common.Label" String="Region"/>
+      </Annotations>
+      <Annotations Target="MUService.DistributionCenters/country">
+        <Annotation Term="Common.Label" String="Country"/>
+      </Annotations>
+      <Annotations Target="MUService.DistributionCenters/IsActiveEntity">
+        <Annotation Term="UI.Hidden" Bool="true"/>
+      </Annotations>
+      <Annotations Target="MUService.DistributionCenters/HasActiveEntity">
+        <Annotation Term="UI.Hidden" Bool="true"/>
+      </Annotations>
+      <Annotations Target="MUService.DistributionCenters/HasDraftEntity">
+        <Annotation Term="UI.Hidden" Bool="true"/>
+      </Annotations>
+      <Annotations Target="MUService.DistributionCenters/DraftAdministrativeData">
+        <Annotation Term="UI.Hidden" Bool="true"/>
+      </Annotations>
+      <Annotations Target="MUService.Stores">
+        <Annotation Term="Core.Description" String="Aspect to capture changes by user and name&#xA;&#xA;See https://cap.cloud.sap/docs/cds/common#aspect-managed"/>
+      </Annotations>
+      <Annotations Target="MUService.EntityContainer/Stores">
+        <Annotation Term="Common.DraftRoot">
+          <Record Type="Common.DraftRootType">
+            <PropertyValue Property="ActivationAction" String="MUService.draftActivate"/>
+            <PropertyValue Property="EditAction" String="MUService.draftEdit"/>
+            <PropertyValue Property="PreparationAction" String="MUService.draftPrepare"/>
+          </Record>
+        </Annotation>
+      </Annotations>
+      <Annotations Target="MUService.Stores/createdAt">
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+        <Annotation Term="Core.Immutable" Bool="true"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Common.Label" String="Vytvořeno dne"/>
+      </Annotations>
+      <Annotations Target="MUService.Stores/createdBy">
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+        <Annotation Term="Core.Immutable" Bool="true"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Core.Description" String="Jedinečné ID uživatele"/>
+        <Annotation Term="Common.Label" String="Vytvořil"/>
+      </Annotations>
+      <Annotations Target="MUService.Stores/modifiedAt">
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Common.Label" String="Změněno dne"/>
+      </Annotations>
+      <Annotations Target="MUService.Stores/modifiedBy">
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Core.Description" String="Jedinečné ID uživatele"/>
+        <Annotation Term="Common.Label" String="Autor změny"/>
+      </Annotations>
+      <Annotations Target="MUService.Stores/ID">
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="UI.Hidden" Bool="true"/>
+        <Annotation Term="Common.Text" Path="name"/>
+      </Annotations>
+      <Annotations Target="MUService.Stores/name">
+        <Annotation Term="Common.Label" String="Name"/>
+      </Annotations>
+      <Annotations Target="MUService.Stores/city">
+        <Annotation Term="Common.Label" String="City"/>
+      </Annotations>
+      <Annotations Target="MUService.Stores/region">
+        <Annotation Term="Common.Label" String="Region"/>
+      </Annotations>
+      <Annotations Target="MUService.Stores/country">
+        <Annotation Term="Common.Label" String="Country"/>
+      </Annotations>
+      <Annotations Target="MUService.Stores/IsActiveEntity">
+        <Annotation Term="UI.Hidden" Bool="true"/>
+      </Annotations>
+      <Annotations Target="MUService.Stores/HasActiveEntity">
+        <Annotation Term="UI.Hidden" Bool="true"/>
+      </Annotations>
+      <Annotations Target="MUService.Stores/HasDraftEntity">
+        <Annotation Term="UI.Hidden" Bool="true"/>
+      </Annotations>
+      <Annotations Target="MUService.Stores/DraftAdministrativeData">
+        <Annotation Term="UI.Hidden" Bool="true"/>
+      </Annotations>
+      <Annotations Target="MUService.DraftAdministrativeData">
+        <Annotation Term="Common.Label" String="Správní data návrhu"/>
+      </Annotations>
+      <Annotations Target="MUService.DraftAdministrativeData/DraftUUID">
+        <Annotation Term="UI.Hidden" Bool="true"/>
+        <Annotation Term="Common.Label" String="Návrh (technické ID)"/>
+      </Annotations>
+      <Annotations Target="MUService.DraftAdministrativeData/CreationDateTime">
+        <Annotation Term="Common.Label" String="Návrh vytvořen dne"/>
+      </Annotations>
+      <Annotations Target="MUService.DraftAdministrativeData/CreatedByUser">
+        <Annotation Term="Common.Label" String="Návrh vytvořil"/>
+      </Annotations>
+      <Annotations Target="MUService.DraftAdministrativeData/DraftIsCreatedByMe">
+        <Annotation Term="UI.Hidden" Bool="true"/>
+        <Annotation Term="Common.Label" String="Návrh vytvořen mnou"/>
+      </Annotations>
+      <Annotations Target="MUService.DraftAdministrativeData/LastChangeDateTime">
+        <Annotation Term="Common.Label" String="Návrh naposledy změněn dne"/>
+      </Annotations>
+      <Annotations Target="MUService.DraftAdministrativeData/LastChangedByUser">
+        <Annotation Term="Common.Label" String="Návrh naposledy změnil"/>
+      </Annotations>
+      <Annotations Target="MUService.DraftAdministrativeData/InProcessByUser">
+        <Annotation Term="Common.Label" String="Návrh zpracovává"/>
+      </Annotations>
+      <Annotations Target="MUService.DraftAdministrativeData/DraftIsProcessedByMe">
+        <Annotation Term="UI.Hidden" Bool="true"/>
+        <Annotation Term="Common.Label" String="Návrh zpracovávaný mnou"/>
+      </Annotations>
+    </Schema>
+  </edmx:DataServices>
+</edmx:Edmx>

@@ -1,0 +1,2219 @@
+{
+  "definitions": {
+    "MUService": {
+      "@source": "MarketUnit-service.cds",
+      "kind": "service",
+      "@path": "service/mu",
+      "@requires": "any"
+    },
+    "MUService.MarketUnits": {
+      "kind": "entity",
+      "doc": "Aspect to capture changes by user and name\n\nSee https://cap.cloud.sap/docs/cds/common#aspect-managed",
+      "@odata.draft.enabled": true,
+      "@UI.HeaderInfo.TypeName": "{i18n>MarketUnit}",
+      "@UI.HeaderInfo.TypeNamePlural": "{i18n>MarketUnits}",
+      "@UI.HeaderInfo.Title.Value": {
+        "=": "name"
+      },
+      "@UI.HeaderInfo.Description.Value": {
+        "=": "name"
+      },
+      "@UI.Identification": [
+        {
+          "Value": {
+            "=": "name"
+          }
+        },
+        {
+          "$Type": "UI.DataFieldForAction",
+          "Label": "{i18n>AddReview}",
+          "Action": "MUService.addReview"
+        }
+      ],
+      "@UI.PresentationVariant.Text": "Default",
+      "@UI.PresentationVariant.SortOrder": [
+        {
+          "Property": {
+            "=": "name"
+          }
+        }
+      ],
+      "@UI.PresentationVariant.Visualizations": [
+        "@UI.LineItem"
+      ],
+      "@UI.SelectionFields": [
+        {
+          "=": "name"
+        }
+      ],
+      "@UI.HeaderFacets": [],
+      "@UI.LineItem": [
+        {
+          "Value": {
+            "=": "name"
+          }
+        },
+        {
+          "Value": {
+            "=": "scenarios"
+          },
+          "Label": "{i18n>Scenarios}"
+        },
+        {
+          "Value": {
+            "=": "prodHier"
+          },
+          "Label": "{i18n>ProductHierarchy}"
+        },
+        {
+          "Value": {
+            "=": "dc_ID"
+          },
+          "Label": "{i18n>DistributionCenter}"
+        },
+        {
+          "Value": {
+            "=": "store_ID"
+          },
+          "Label": "{i18n>Store}"
+        }
+      ],
+      "@UI.Facets": [
+        {
+          "$Type": "UI.CollectionFacet",
+          "ID": "collectionBasicInformation",
+          "Label": "{i18n>BasicInformation}",
+          "Facets": [
+            {
+              "$Type": "UI.ReferenceFacet",
+              "Target": "@UI.FieldGroup#BasicInformation",
+              "ID": "FieldGroupBasicInformation",
+              "Label": "{i18n>BasicInformation}"
+            },
+            {
+              "$Type": "UI.ReferenceFacet",
+              "Target": "@UI.FieldGroup#Scenarios",
+              "ID": "FieldGroupScenarios",
+              "Label": "{i18n>Scenarios}"
+            },
+            {
+              "$Type": "UI.ReferenceFacet",
+              "Target": "@UI.FieldGroup#ProductHierarchy",
+              "ID": "FieldGroupProductHierarchy",
+              "Label": "{i18n>ProductHierarchy}"
+            }
+          ]
+        },
+        {
+          "$Type": "UI.ReferenceFacet",
+          "Label": "{i18n>Locations}",
+          "Target": "@UI.FieldGroup#Locations"
+        },
+        {
+          "$Type": "UI.ReferenceFacet",
+          "Label": "{i18n>Responsibilities}",
+          "Target": "@UI.FieldGroup#Responsibilities"
+        }
+      ],
+      "@UI.FieldGroup#BasicInformation.Data": [
+        {
+          "Value": {
+            "=": "name"
+          }
+        },
+        {
+          "Value": {
+            "=": "dc_ID"
+          }
+        },
+        {
+          "Value": {
+            "=": "store_ID"
+          }
+        }
+      ],
+      "@UI.FieldGroup#Scenarios.$Type": "UI.FieldGroupType",
+      "@UI.FieldGroup#Scenarios.Data": [
+        {
+          "$Type": "UI.DataField",
+          "Value": {
+            "=": "scenarios"
+          }
+        }
+      ],
+      "@UI.FieldGroup#ProductHierarchy.$Type": "UI.FieldGroupType",
+      "@UI.FieldGroup#ProductHierarchy.Data": [
+        {
+          "$Type": "UI.DataField",
+          "Value": {
+            "=": "prodHier"
+          }
+        }
+      ],
+      "@UI.FieldGroup#Locations.Data": [
+        {
+          "Value": {
+            "=": "dc.address"
+          }
+        }
+      ],
+      "@UI.FieldGroup#Responsibilities.Data": [
+        {
+          "Value": {
+            "=": "dc.address"
+          }
+        }
+      ],
+      "@UI.FieldGroup#Main.Data": [
+        {
+          "Value": {
+            "=": "name"
+          }
+        },
+        {
+          "Value": {
+            "=": "scenarios"
+          }
+        },
+        {
+          "Value": {
+            "=": "prodHier"
+          }
+        },
+        {
+          "Value": {
+            "=": "dc_ID"
+          }
+        },
+        {
+          "Value": {
+            "=": "store_ID"
+          }
+        }
+      ],
+      "projection": {
+        "from": {
+          "ref": [
+            "sap.ui.mu.MarketUnits"
+          ]
+        }
+      },
+      "elements": {
+        "createdAt": {
+          "@cds.on.insert": {
+            "=": "$now"
+          },
+          "@UI.HiddenFilter": true,
+          "@Core.Immutable": true,
+          "@title": "{i18n>CreatedAt}",
+          "@readonly": true,
+          "type": "cds.Timestamp",
+          "@Core.Computed": true,
+          "@Common.Label": "{i18n>CreatedAt}"
+        },
+        "createdBy": {
+          "doc": "Canonical user ID",
+          "@cds.on.insert": {
+            "=": "$user"
+          },
+          "@UI.HiddenFilter": true,
+          "@Core.Immutable": true,
+          "@title": "{i18n>CreatedBy}",
+          "@readonly": true,
+          "@description": "{i18n>UserID.Description}",
+          "type": "cds.String",
+          "length": 255,
+          "@Core.Computed": true,
+          "@Common.Label": "{i18n>CreatedBy}",
+          "@Core.Description": "{i18n>UserID.Description}"
+        },
+        "modifiedAt": {
+          "@cds.on.insert": {
+            "=": "$now"
+          },
+          "@cds.on.update": {
+            "=": "$now"
+          },
+          "@UI.HiddenFilter": true,
+          "@title": "{i18n>ChangedAt}",
+          "@readonly": true,
+          "type": "cds.Timestamp",
+          "@Core.Computed": true,
+          "@Common.Label": "{i18n>ChangedAt}"
+        },
+        "modifiedBy": {
+          "doc": "Canonical user ID",
+          "@cds.on.insert": {
+            "=": "$user"
+          },
+          "@cds.on.update": {
+            "=": "$user"
+          },
+          "@UI.HiddenFilter": true,
+          "@title": "{i18n>ChangedBy}",
+          "@readonly": true,
+          "@description": "{i18n>UserID.Description}",
+          "type": "cds.String",
+          "length": 255,
+          "@Core.Computed": true,
+          "@Common.Label": "{i18n>ChangedBy}",
+          "@Core.Description": "{i18n>UserID.Description}"
+        },
+        "ID": {
+          "@Core.Computed": true,
+          "key": true,
+          "type": "cds.UUID"
+        },
+        "name": {
+          "@title": "Name",
+          "type": "cds.String",
+          "length": 100,
+          "@Common.Label": "Name"
+        },
+        "scenarios": {
+          "@title": "Scenarios",
+          "type": "cds.String",
+          "length": 30,
+          "@Common.Label": "Scenarios"
+        },
+        "prodHier": {
+          "@title": "Product Hierarchy",
+          "type": "cds.String",
+          "@Common.Label": "Product Hierarchy"
+        },
+        "dc": {
+          "@title": "Distribution Center",
+          "@Common.Text": {
+            "=": "dc.name"
+          },
+          "@Common.TextArrangement": {
+            "#": "TextOnly"
+          },
+          "@Common.ValueList.Label": "DistributionCenters",
+          "@Common.ValueList.CollectionPath": "DistributionCenters",
+          "@Common.ValueList.Parameters": [
+            {
+              "$Type": "Common.ValueListParameterInOut",
+              "LocalDataProperty": {
+                "=": "dc_ID"
+              },
+              "ValueListProperty": "ID"
+            },
+            {
+              "$Type": "Common.ValueListParameterDisplayOnly",
+              "ValueListProperty": "name"
+            }
+          ],
+          "type": "cds.Association",
+          "target": "MUService.DistributionCenters",
+          "keys": [
+            {
+              "ref": [
+                "ID"
+              ],
+              "$generatedFieldName": "dc_ID"
+            }
+          ],
+          "@Common.Label": "Distribution Center"
+        },
+        "dc_ID": {
+          "type": "cds.UUID",
+          "@odata.foreignKey4": "dc",
+          "@title": "Distribution Center",
+          "@Common.Text": {
+            "=": "dc.name"
+          },
+          "@Common.TextArrangement": {
+            "#": "TextOnly"
+          },
+          "@Common.ValueList.Label": "DistributionCenters",
+          "@Common.ValueList.CollectionPath": "DistributionCenters",
+          "@Common.ValueList.Parameters": [
+            {
+              "$Type": "Common.ValueListParameterInOut",
+              "LocalDataProperty": {
+                "=": "dc_ID"
+              },
+              "ValueListProperty": "ID"
+            },
+            {
+              "$Type": "Common.ValueListParameterDisplayOnly",
+              "ValueListProperty": "name"
+            }
+          ],
+          "@Common.Label": "Distribution Center"
+        },
+        "store": {
+          "@title": "Store",
+          "@Common.Text": {
+            "=": "store.name"
+          },
+          "@Common.TextArrangement": {
+            "#": "TextOnly"
+          },
+          "@Common.ValueList.Label": "Stores",
+          "@Common.ValueList.CollectionPath": "Stores",
+          "@Common.ValueList.Parameters": [
+            {
+              "$Type": "Common.ValueListParameterInOut",
+              "LocalDataProperty": {
+                "=": "store_ID"
+              },
+              "ValueListProperty": "ID"
+            },
+            {
+              "$Type": "Common.ValueListParameterDisplayOnly",
+              "ValueListProperty": "name"
+            }
+          ],
+          "type": "cds.Association",
+          "target": "MUService.Stores",
+          "keys": [
+            {
+              "ref": [
+                "ID"
+              ],
+              "$generatedFieldName": "store_ID"
+            }
+          ],
+          "@Common.Label": "Store"
+        },
+        "store_ID": {
+          "type": "cds.UUID",
+          "@odata.foreignKey4": "store",
+          "@title": "Store",
+          "@Common.Text": {
+            "=": "store.name"
+          },
+          "@Common.TextArrangement": {
+            "#": "TextOnly"
+          },
+          "@Common.ValueList.Label": "Stores",
+          "@Common.ValueList.CollectionPath": "Stores",
+          "@Common.ValueList.Parameters": [
+            {
+              "$Type": "Common.ValueListParameterInOut",
+              "LocalDataProperty": {
+                "=": "store_ID"
+              },
+              "ValueListProperty": "ID"
+            },
+            {
+              "$Type": "Common.ValueListParameterDisplayOnly",
+              "ValueListProperty": "name"
+            }
+          ],
+          "@Common.Label": "Store"
+        },
+        "IsActiveEntity": {
+          "type": "cds.Boolean",
+          "key": true,
+          "default": {
+            "val": true
+          },
+          "@UI.Hidden": true
+        },
+        "HasActiveEntity": {
+          "type": "cds.Boolean",
+          "default": {
+            "val": false
+          },
+          "notNull": true,
+          "@UI.Hidden": true
+        },
+        "HasDraftEntity": {
+          "type": "cds.Boolean",
+          "default": {
+            "val": false
+          },
+          "notNull": true,
+          "@UI.Hidden": true
+        },
+        "DraftAdministrativeData": {
+          "type": "cds.Association",
+          "target": "MUService.DraftAdministrativeData",
+          "keys": [
+            {
+              "ref": [
+                "DraftUUID"
+              ],
+              "$generatedFieldName": "DraftAdministrativeData_DraftUUID"
+            }
+          ],
+          "cardinality": {
+            "max": 1
+          },
+          "@odata.contained": true,
+          "@UI.Hidden": true
+        },
+        "DraftAdministrativeData_DraftUUID": {
+          "type": "cds.UUID",
+          "@odata.contained": true,
+          "@UI.Hidden": true,
+          "@odata.foreignKey4": "DraftAdministrativeData"
+        },
+        "SiblingEntity": {
+          "type": "cds.Association",
+          "target": "MUService.MarketUnits",
+          "cardinality": {
+            "max": 1
+          },
+          "on": [
+            {
+              "ref": [
+                "SiblingEntity",
+                "ID"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "ID"
+              ]
+            },
+            "and",
+            {
+              "ref": [
+                "SiblingEntity",
+                "IsActiveEntity"
+              ]
+            },
+            "!=",
+            {
+              "ref": [
+                "IsActiveEntity"
+              ]
+            }
+          ]
+        }
+      },
+      "@Common.DraftRoot.ActivationAction": "draftActivate",
+      "@Common.DraftRoot.EditAction": "draftEdit",
+      "@Common.DraftRoot.PreparationAction": "draftPrepare",
+      "actions": {
+        "draftPrepare": {
+          "kind": "action",
+          "returns": {
+            "type": "MUService.MarketUnits"
+          },
+          "params": {
+            "SideEffectsQualifier": {
+              "type": "cds.String"
+            }
+          }
+        },
+        "draftActivate": {
+          "kind": "action",
+          "returns": {
+            "type": "MUService.MarketUnits"
+          }
+        },
+        "draftEdit": {
+          "kind": "action",
+          "returns": {
+            "type": "MUService.MarketUnits"
+          },
+          "params": {
+            "PreserveChanges": {
+              "type": "cds.Boolean"
+            }
+          }
+        }
+      }
+    },
+    "MUService.DistributionCenters": {
+      "kind": "entity",
+      "doc": "Aspect to capture changes by user and name\n\nSee https://cap.cloud.sap/docs/cds/common#aspect-managed",
+      "@odata.draft.enabled": true,
+      "projection": {
+        "from": {
+          "ref": [
+            "sap.ui.mu.DistributionCenters"
+          ]
+        }
+      },
+      "elements": {
+        "createdAt": {
+          "@cds.on.insert": {
+            "=": "$now"
+          },
+          "@UI.HiddenFilter": true,
+          "@Core.Immutable": true,
+          "@title": "{i18n>CreatedAt}",
+          "@readonly": true,
+          "type": "cds.Timestamp",
+          "@Core.Computed": true,
+          "@Common.Label": "{i18n>CreatedAt}"
+        },
+        "createdBy": {
+          "doc": "Canonical user ID",
+          "@cds.on.insert": {
+            "=": "$user"
+          },
+          "@UI.HiddenFilter": true,
+          "@Core.Immutable": true,
+          "@title": "{i18n>CreatedBy}",
+          "@readonly": true,
+          "@description": "{i18n>UserID.Description}",
+          "type": "cds.String",
+          "length": 255,
+          "@Core.Computed": true,
+          "@Common.Label": "{i18n>CreatedBy}",
+          "@Core.Description": "{i18n>UserID.Description}"
+        },
+        "modifiedAt": {
+          "@cds.on.insert": {
+            "=": "$now"
+          },
+          "@cds.on.update": {
+            "=": "$now"
+          },
+          "@UI.HiddenFilter": true,
+          "@title": "{i18n>ChangedAt}",
+          "@readonly": true,
+          "type": "cds.Timestamp",
+          "@Core.Computed": true,
+          "@Common.Label": "{i18n>ChangedAt}"
+        },
+        "modifiedBy": {
+          "doc": "Canonical user ID",
+          "@cds.on.insert": {
+            "=": "$user"
+          },
+          "@cds.on.update": {
+            "=": "$user"
+          },
+          "@UI.HiddenFilter": true,
+          "@title": "{i18n>ChangedBy}",
+          "@readonly": true,
+          "@description": "{i18n>UserID.Description}",
+          "type": "cds.String",
+          "length": 255,
+          "@Core.Computed": true,
+          "@Common.Label": "{i18n>ChangedBy}",
+          "@Core.Description": "{i18n>UserID.Description}"
+        },
+        "ID": {
+          "@Core.Computed": true,
+          "@UI.Hidden": true,
+          "@Common.Text": {
+            "=": "name"
+          },
+          "key": true,
+          "type": "cds.UUID"
+        },
+        "name": {
+          "@title": "Name",
+          "type": "cds.String",
+          "@Common.Label": "Name"
+        },
+        "address": {
+          "type": "cds.String"
+        },
+        "city": {
+          "@title": "City",
+          "type": "cds.String",
+          "@Common.Label": "City"
+        },
+        "region": {
+          "@title": "Region",
+          "type": "cds.String",
+          "@Common.Label": "Region"
+        },
+        "country": {
+          "@title": "Country",
+          "type": "cds.String",
+          "@Common.Label": "Country"
+        },
+        "IsActiveEntity": {
+          "type": "cds.Boolean",
+          "key": true,
+          "default": {
+            "val": true
+          },
+          "@UI.Hidden": true
+        },
+        "HasActiveEntity": {
+          "type": "cds.Boolean",
+          "default": {
+            "val": false
+          },
+          "notNull": true,
+          "@UI.Hidden": true
+        },
+        "HasDraftEntity": {
+          "type": "cds.Boolean",
+          "default": {
+            "val": false
+          },
+          "notNull": true,
+          "@UI.Hidden": true
+        },
+        "DraftAdministrativeData": {
+          "type": "cds.Association",
+          "target": "MUService.DraftAdministrativeData",
+          "keys": [
+            {
+              "ref": [
+                "DraftUUID"
+              ],
+              "$generatedFieldName": "DraftAdministrativeData_DraftUUID"
+            }
+          ],
+          "cardinality": {
+            "max": 1
+          },
+          "@odata.contained": true,
+          "@UI.Hidden": true
+        },
+        "DraftAdministrativeData_DraftUUID": {
+          "type": "cds.UUID",
+          "@odata.contained": true,
+          "@UI.Hidden": true,
+          "@odata.foreignKey4": "DraftAdministrativeData"
+        },
+        "SiblingEntity": {
+          "type": "cds.Association",
+          "target": "MUService.DistributionCenters",
+          "cardinality": {
+            "max": 1
+          },
+          "on": [
+            {
+              "ref": [
+                "SiblingEntity",
+                "ID"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "ID"
+              ]
+            },
+            "and",
+            {
+              "ref": [
+                "SiblingEntity",
+                "IsActiveEntity"
+              ]
+            },
+            "!=",
+            {
+              "ref": [
+                "IsActiveEntity"
+              ]
+            }
+          ]
+        }
+      },
+      "@Common.DraftRoot.ActivationAction": "draftActivate",
+      "@Common.DraftRoot.EditAction": "draftEdit",
+      "@Common.DraftRoot.PreparationAction": "draftPrepare",
+      "actions": {
+        "draftPrepare": {
+          "kind": "action",
+          "returns": {
+            "type": "MUService.DistributionCenters"
+          },
+          "params": {
+            "SideEffectsQualifier": {
+              "type": "cds.String"
+            }
+          }
+        },
+        "draftActivate": {
+          "kind": "action",
+          "returns": {
+            "type": "MUService.DistributionCenters"
+          }
+        },
+        "draftEdit": {
+          "kind": "action",
+          "returns": {
+            "type": "MUService.DistributionCenters"
+          },
+          "params": {
+            "PreserveChanges": {
+              "type": "cds.Boolean"
+            }
+          }
+        }
+      }
+    },
+    "MUService.Stores": {
+      "kind": "entity",
+      "doc": "Aspect to capture changes by user and name\n\nSee https://cap.cloud.sap/docs/cds/common#aspect-managed",
+      "@odata.draft.enabled": true,
+      "projection": {
+        "from": {
+          "ref": [
+            "sap.ui.mu.Stores"
+          ]
+        }
+      },
+      "elements": {
+        "createdAt": {
+          "@cds.on.insert": {
+            "=": "$now"
+          },
+          "@UI.HiddenFilter": true,
+          "@Core.Immutable": true,
+          "@title": "{i18n>CreatedAt}",
+          "@readonly": true,
+          "type": "cds.Timestamp",
+          "@Core.Computed": true,
+          "@Common.Label": "{i18n>CreatedAt}"
+        },
+        "createdBy": {
+          "doc": "Canonical user ID",
+          "@cds.on.insert": {
+            "=": "$user"
+          },
+          "@UI.HiddenFilter": true,
+          "@Core.Immutable": true,
+          "@title": "{i18n>CreatedBy}",
+          "@readonly": true,
+          "@description": "{i18n>UserID.Description}",
+          "type": "cds.String",
+          "length": 255,
+          "@Core.Computed": true,
+          "@Common.Label": "{i18n>CreatedBy}",
+          "@Core.Description": "{i18n>UserID.Description}"
+        },
+        "modifiedAt": {
+          "@cds.on.insert": {
+            "=": "$now"
+          },
+          "@cds.on.update": {
+            "=": "$now"
+          },
+          "@UI.HiddenFilter": true,
+          "@title": "{i18n>ChangedAt}",
+          "@readonly": true,
+          "type": "cds.Timestamp",
+          "@Core.Computed": true,
+          "@Common.Label": "{i18n>ChangedAt}"
+        },
+        "modifiedBy": {
+          "doc": "Canonical user ID",
+          "@cds.on.insert": {
+            "=": "$user"
+          },
+          "@cds.on.update": {
+            "=": "$user"
+          },
+          "@UI.HiddenFilter": true,
+          "@title": "{i18n>ChangedBy}",
+          "@readonly": true,
+          "@description": "{i18n>UserID.Description}",
+          "type": "cds.String",
+          "length": 255,
+          "@Core.Computed": true,
+          "@Common.Label": "{i18n>ChangedBy}",
+          "@Core.Description": "{i18n>UserID.Description}"
+        },
+        "ID": {
+          "@Core.Computed": true,
+          "@UI.Hidden": true,
+          "@Common.Text": {
+            "=": "name"
+          },
+          "key": true,
+          "type": "cds.UUID"
+        },
+        "name": {
+          "@title": "Name",
+          "type": "cds.String",
+          "@Common.Label": "Name"
+        },
+        "address": {
+          "type": "cds.String"
+        },
+        "city": {
+          "@title": "City",
+          "type": "cds.String",
+          "@Common.Label": "City"
+        },
+        "region": {
+          "@title": "Region",
+          "type": "cds.String",
+          "@Common.Label": "Region"
+        },
+        "country": {
+          "@title": "Country",
+          "type": "cds.String",
+          "@Common.Label": "Country"
+        },
+        "IsActiveEntity": {
+          "type": "cds.Boolean",
+          "key": true,
+          "default": {
+            "val": true
+          },
+          "@UI.Hidden": true
+        },
+        "HasActiveEntity": {
+          "type": "cds.Boolean",
+          "default": {
+            "val": false
+          },
+          "notNull": true,
+          "@UI.Hidden": true
+        },
+        "HasDraftEntity": {
+          "type": "cds.Boolean",
+          "default": {
+            "val": false
+          },
+          "notNull": true,
+          "@UI.Hidden": true
+        },
+        "DraftAdministrativeData": {
+          "type": "cds.Association",
+          "target": "MUService.DraftAdministrativeData",
+          "keys": [
+            {
+              "ref": [
+                "DraftUUID"
+              ],
+              "$generatedFieldName": "DraftAdministrativeData_DraftUUID"
+            }
+          ],
+          "cardinality": {
+            "max": 1
+          },
+          "@odata.contained": true,
+          "@UI.Hidden": true
+        },
+        "DraftAdministrativeData_DraftUUID": {
+          "type": "cds.UUID",
+          "@odata.contained": true,
+          "@UI.Hidden": true,
+          "@odata.foreignKey4": "DraftAdministrativeData"
+        },
+        "SiblingEntity": {
+          "type": "cds.Association",
+          "target": "MUService.Stores",
+          "cardinality": {
+            "max": 1
+          },
+          "on": [
+            {
+              "ref": [
+                "SiblingEntity",
+                "ID"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "ID"
+              ]
+            },
+            "and",
+            {
+              "ref": [
+                "SiblingEntity",
+                "IsActiveEntity"
+              ]
+            },
+            "!=",
+            {
+              "ref": [
+                "IsActiveEntity"
+              ]
+            }
+          ]
+        }
+      },
+      "@Common.DraftRoot.ActivationAction": "draftActivate",
+      "@Common.DraftRoot.EditAction": "draftEdit",
+      "@Common.DraftRoot.PreparationAction": "draftPrepare",
+      "actions": {
+        "draftPrepare": {
+          "kind": "action",
+          "returns": {
+            "type": "MUService.Stores"
+          },
+          "params": {
+            "SideEffectsQualifier": {
+              "type": "cds.String"
+            }
+          }
+        },
+        "draftActivate": {
+          "kind": "action",
+          "returns": {
+            "type": "MUService.Stores"
+          }
+        },
+        "draftEdit": {
+          "kind": "action",
+          "returns": {
+            "type": "MUService.Stores"
+          },
+          "params": {
+            "PreserveChanges": {
+              "type": "cds.Boolean"
+            }
+          }
+        }
+      }
+    },
+    "sap.ui.mu.MarketUnits": {
+      "kind": "entity",
+      "doc": "Aspect to capture changes by user and name\n\nSee https://cap.cloud.sap/docs/cds/common#aspect-managed",
+      "@UI.HeaderInfo.TypeName": "Market Unit",
+      "@UI.HeaderInfo.TypeNamePlural": "Market Units",
+      "@UI.SelectionFields": [
+        {
+          "=": "scenarios"
+        }
+      ],
+      "@UI.LineItem": [
+        {
+          "Value": {
+            "=": "name"
+          }
+        },
+        {
+          "Value": {
+            "=": "scenarios"
+          }
+        },
+        {
+          "Value": {
+            "=": "prodHier"
+          }
+        },
+        {
+          "Value": {
+            "=": "dc_ID"
+          },
+          "@HTML5.CssDefaults": {
+            "width": "100%"
+          }
+        },
+        {
+          "Value": {
+            "=": "store_ID"
+          },
+          "@HTML5.CssDefaults": {
+            "width": "100%"
+          }
+        }
+      ],
+      "@UI.Facets": [
+        {
+          "$Type": "UI.ReferenceFacet",
+          "Label": "Main",
+          "Target": "@UI.FieldGroup#Main"
+        }
+      ],
+      "@UI.FieldGroup#Main.Data": [
+        {
+          "Value": {
+            "=": "name"
+          }
+        },
+        {
+          "Value": {
+            "=": "scenarios"
+          }
+        },
+        {
+          "Value": {
+            "=": "prodHier"
+          }
+        },
+        {
+          "Value": {
+            "=": "dc_ID"
+          }
+        },
+        {
+          "Value": {
+            "=": "store_ID"
+          }
+        }
+      ],
+      "includes": [
+        "managed"
+      ],
+      "elements": {
+        "createdAt": {
+          "@cds.on.insert": {
+            "=": "$now"
+          },
+          "@UI.HiddenFilter": true,
+          "@Core.Immutable": true,
+          "@title": "{i18n>CreatedAt}",
+          "@readonly": true,
+          "type": "cds.Timestamp",
+          "@Core.Computed": true,
+          "@Common.Label": "{i18n>CreatedAt}"
+        },
+        "createdBy": {
+          "doc": "Canonical user ID",
+          "@cds.on.insert": {
+            "=": "$user"
+          },
+          "@UI.HiddenFilter": true,
+          "@Core.Immutable": true,
+          "@title": "{i18n>CreatedBy}",
+          "@readonly": true,
+          "@description": "{i18n>UserID.Description}",
+          "type": "cds.String",
+          "length": 255,
+          "@Core.Computed": true,
+          "@Common.Label": "{i18n>CreatedBy}",
+          "@Core.Description": "{i18n>UserID.Description}"
+        },
+        "modifiedAt": {
+          "@cds.on.insert": {
+            "=": "$now"
+          },
+          "@cds.on.update": {
+            "=": "$now"
+          },
+          "@UI.HiddenFilter": true,
+          "@title": "{i18n>ChangedAt}",
+          "@readonly": true,
+          "type": "cds.Timestamp",
+          "@Core.Computed": true,
+          "@Common.Label": "{i18n>ChangedAt}"
+        },
+        "modifiedBy": {
+          "doc": "Canonical user ID",
+          "@cds.on.insert": {
+            "=": "$user"
+          },
+          "@cds.on.update": {
+            "=": "$user"
+          },
+          "@UI.HiddenFilter": true,
+          "@title": "{i18n>ChangedBy}",
+          "@readonly": true,
+          "@description": "{i18n>UserID.Description}",
+          "type": "cds.String",
+          "length": 255,
+          "@Core.Computed": true,
+          "@Common.Label": "{i18n>ChangedBy}",
+          "@Core.Description": "{i18n>UserID.Description}"
+        },
+        "ID": {
+          "@Core.Computed": true,
+          "key": true,
+          "type": "cds.UUID"
+        },
+        "name": {
+          "@title": "Name",
+          "type": "cds.String",
+          "length": 100,
+          "@Common.Label": "Name"
+        },
+        "scenarios": {
+          "@title": "Scenarios",
+          "type": "cds.String",
+          "length": 30,
+          "@Common.Label": "Scenarios"
+        },
+        "prodHier": {
+          "@title": "Product Hierarchy",
+          "type": "cds.String",
+          "@Common.Label": "Product Hierarchy"
+        },
+        "dc": {
+          "@title": "Distribution Center",
+          "@Common.Text": {
+            "=": "dc.name"
+          },
+          "@Common.TextArrangement": {
+            "#": "TextOnly"
+          },
+          "@Common.ValueList.Label": "DistributionCenters",
+          "@Common.ValueList.CollectionPath": "DistributionCenters",
+          "@Common.ValueList.Parameters": [
+            {
+              "$Type": "Common.ValueListParameterInOut",
+              "LocalDataProperty": {
+                "=": "dc_ID"
+              },
+              "ValueListProperty": "ID"
+            },
+            {
+              "$Type": "Common.ValueListParameterDisplayOnly",
+              "ValueListProperty": "name"
+            }
+          ],
+          "type": "cds.Association",
+          "target": "sap.ui.mu.DistributionCenters",
+          "keys": [
+            {
+              "ref": [
+                "ID"
+              ],
+              "$generatedFieldName": "dc_ID"
+            }
+          ],
+          "@Common.Label": "Distribution Center"
+        },
+        "dc_ID": {
+          "type": "cds.UUID",
+          "@odata.foreignKey4": "dc",
+          "@title": "Distribution Center",
+          "@Common.Text": {
+            "=": "dc.name"
+          },
+          "@Common.TextArrangement": {
+            "#": "TextOnly"
+          },
+          "@Common.ValueList.Label": "DistributionCenters",
+          "@Common.ValueList.CollectionPath": "DistributionCenters",
+          "@Common.ValueList.Parameters": [
+            {
+              "$Type": "Common.ValueListParameterInOut",
+              "LocalDataProperty": {
+                "=": "dc_ID"
+              },
+              "ValueListProperty": "ID"
+            },
+            {
+              "$Type": "Common.ValueListParameterDisplayOnly",
+              "ValueListProperty": "name"
+            }
+          ],
+          "@Common.Label": "Distribution Center"
+        },
+        "store": {
+          "@title": "Store",
+          "@Common.Text": {
+            "=": "store.name"
+          },
+          "@Common.TextArrangement": {
+            "#": "TextOnly"
+          },
+          "@Common.ValueList.Label": "Stores",
+          "@Common.ValueList.CollectionPath": "Stores",
+          "@Common.ValueList.Parameters": [
+            {
+              "$Type": "Common.ValueListParameterInOut",
+              "LocalDataProperty": {
+                "=": "store_ID"
+              },
+              "ValueListProperty": "ID"
+            },
+            {
+              "$Type": "Common.ValueListParameterDisplayOnly",
+              "ValueListProperty": "name"
+            }
+          ],
+          "type": "cds.Association",
+          "target": "sap.ui.mu.Stores",
+          "keys": [
+            {
+              "ref": [
+                "ID"
+              ],
+              "$generatedFieldName": "store_ID"
+            }
+          ],
+          "@Common.Label": "Store"
+        },
+        "store_ID": {
+          "type": "cds.UUID",
+          "@odata.foreignKey4": "store",
+          "@title": "Store",
+          "@Common.Text": {
+            "=": "store.name"
+          },
+          "@Common.TextArrangement": {
+            "#": "TextOnly"
+          },
+          "@Common.ValueList.Label": "Stores",
+          "@Common.ValueList.CollectionPath": "Stores",
+          "@Common.ValueList.Parameters": [
+            {
+              "$Type": "Common.ValueListParameterInOut",
+              "LocalDataProperty": {
+                "=": "store_ID"
+              },
+              "ValueListProperty": "ID"
+            },
+            {
+              "$Type": "Common.ValueListParameterDisplayOnly",
+              "ValueListProperty": "name"
+            }
+          ],
+          "@Common.Label": "Store"
+        }
+      }
+    },
+    "sap.ui.mu.DistributionCenters": {
+      "kind": "entity",
+      "doc": "Aspect to capture changes by user and name\n\nSee https://cap.cloud.sap/docs/cds/common#aspect-managed",
+      "includes": [
+        "managed"
+      ],
+      "elements": {
+        "createdAt": {
+          "@cds.on.insert": {
+            "=": "$now"
+          },
+          "@UI.HiddenFilter": true,
+          "@Core.Immutable": true,
+          "@title": "{i18n>CreatedAt}",
+          "@readonly": true,
+          "type": "cds.Timestamp",
+          "@Core.Computed": true,
+          "@Common.Label": "{i18n>CreatedAt}"
+        },
+        "createdBy": {
+          "doc": "Canonical user ID",
+          "@cds.on.insert": {
+            "=": "$user"
+          },
+          "@UI.HiddenFilter": true,
+          "@Core.Immutable": true,
+          "@title": "{i18n>CreatedBy}",
+          "@readonly": true,
+          "@description": "{i18n>UserID.Description}",
+          "type": "cds.String",
+          "length": 255,
+          "@Core.Computed": true,
+          "@Common.Label": "{i18n>CreatedBy}",
+          "@Core.Description": "{i18n>UserID.Description}"
+        },
+        "modifiedAt": {
+          "@cds.on.insert": {
+            "=": "$now"
+          },
+          "@cds.on.update": {
+            "=": "$now"
+          },
+          "@UI.HiddenFilter": true,
+          "@title": "{i18n>ChangedAt}",
+          "@readonly": true,
+          "type": "cds.Timestamp",
+          "@Core.Computed": true,
+          "@Common.Label": "{i18n>ChangedAt}"
+        },
+        "modifiedBy": {
+          "doc": "Canonical user ID",
+          "@cds.on.insert": {
+            "=": "$user"
+          },
+          "@cds.on.update": {
+            "=": "$user"
+          },
+          "@UI.HiddenFilter": true,
+          "@title": "{i18n>ChangedBy}",
+          "@readonly": true,
+          "@description": "{i18n>UserID.Description}",
+          "type": "cds.String",
+          "length": 255,
+          "@Core.Computed": true,
+          "@Common.Label": "{i18n>ChangedBy}",
+          "@Core.Description": "{i18n>UserID.Description}"
+        },
+        "ID": {
+          "@Core.Computed": true,
+          "@UI.Hidden": true,
+          "@Common.Text": {
+            "=": "name"
+          },
+          "key": true,
+          "type": "cds.UUID"
+        },
+        "name": {
+          "@title": "Name",
+          "type": "cds.String",
+          "@Common.Label": "Name"
+        },
+        "address": {
+          "type": "cds.String"
+        },
+        "city": {
+          "@title": "City",
+          "type": "cds.String",
+          "@Common.Label": "City"
+        },
+        "region": {
+          "@title": "Region",
+          "type": "cds.String",
+          "@Common.Label": "Region"
+        },
+        "country": {
+          "@title": "Country",
+          "type": "cds.String",
+          "@Common.Label": "Country"
+        }
+      }
+    },
+    "sap.ui.mu.Stores": {
+      "kind": "entity",
+      "doc": "Aspect to capture changes by user and name\n\nSee https://cap.cloud.sap/docs/cds/common#aspect-managed",
+      "includes": [
+        "managed"
+      ],
+      "elements": {
+        "createdAt": {
+          "@cds.on.insert": {
+            "=": "$now"
+          },
+          "@UI.HiddenFilter": true,
+          "@Core.Immutable": true,
+          "@title": "{i18n>CreatedAt}",
+          "@readonly": true,
+          "type": "cds.Timestamp",
+          "@Core.Computed": true,
+          "@Common.Label": "{i18n>CreatedAt}"
+        },
+        "createdBy": {
+          "doc": "Canonical user ID",
+          "@cds.on.insert": {
+            "=": "$user"
+          },
+          "@UI.HiddenFilter": true,
+          "@Core.Immutable": true,
+          "@title": "{i18n>CreatedBy}",
+          "@readonly": true,
+          "@description": "{i18n>UserID.Description}",
+          "type": "cds.String",
+          "length": 255,
+          "@Core.Computed": true,
+          "@Common.Label": "{i18n>CreatedBy}",
+          "@Core.Description": "{i18n>UserID.Description}"
+        },
+        "modifiedAt": {
+          "@cds.on.insert": {
+            "=": "$now"
+          },
+          "@cds.on.update": {
+            "=": "$now"
+          },
+          "@UI.HiddenFilter": true,
+          "@title": "{i18n>ChangedAt}",
+          "@readonly": true,
+          "type": "cds.Timestamp",
+          "@Core.Computed": true,
+          "@Common.Label": "{i18n>ChangedAt}"
+        },
+        "modifiedBy": {
+          "doc": "Canonical user ID",
+          "@cds.on.insert": {
+            "=": "$user"
+          },
+          "@cds.on.update": {
+            "=": "$user"
+          },
+          "@UI.HiddenFilter": true,
+          "@title": "{i18n>ChangedBy}",
+          "@readonly": true,
+          "@description": "{i18n>UserID.Description}",
+          "type": "cds.String",
+          "length": 255,
+          "@Core.Computed": true,
+          "@Common.Label": "{i18n>ChangedBy}",
+          "@Core.Description": "{i18n>UserID.Description}"
+        },
+        "ID": {
+          "@Core.Computed": true,
+          "@UI.Hidden": true,
+          "@Common.Text": {
+            "=": "name"
+          },
+          "key": true,
+          "type": "cds.UUID"
+        },
+        "name": {
+          "@title": "Name",
+          "type": "cds.String",
+          "@Common.Label": "Name"
+        },
+        "address": {
+          "type": "cds.String"
+        },
+        "city": {
+          "@title": "City",
+          "type": "cds.String",
+          "@Common.Label": "City"
+        },
+        "region": {
+          "@title": "Region",
+          "type": "cds.String",
+          "@Common.Label": "Region"
+        },
+        "country": {
+          "@title": "Country",
+          "type": "cds.String",
+          "@Common.Label": "Country"
+        }
+      }
+    },
+    "Language": {
+      "kind": "type",
+      "doc": "Type for an association to Languages\n\nSee https://cap.cloud.sap/docs/cds/common#type-language",
+      "@title": "{i18n>Language}",
+      "@description": "{i18n>LanguageCode.Description}",
+      "type": "cds.Association",
+      "target": "sap.common.Languages",
+      "keys": [
+        {
+          "ref": [
+            "code"
+          ]
+        }
+      ],
+      "@Common.Label": "{i18n>Language}",
+      "@Core.Description": "{i18n>LanguageCode.Description}"
+    },
+    "Currency": {
+      "kind": "type",
+      "doc": "Type for an association to Currencies\n\nSee https://cap.cloud.sap/docs/cds/common#type-currency",
+      "@title": "{i18n>Currency}",
+      "@description": "{i18n>CurrencyCode.Description}",
+      "type": "cds.Association",
+      "target": "sap.common.Currencies",
+      "keys": [
+        {
+          "ref": [
+            "code"
+          ]
+        }
+      ],
+      "@Common.Label": "{i18n>Currency}",
+      "@Core.Description": "{i18n>CurrencyCode.Description}"
+    },
+    "Country": {
+      "kind": "type",
+      "doc": "Type for an association to Countries\n\nSee https://cap.cloud.sap/docs/cds/common#type-country",
+      "@title": "{i18n>Country}",
+      "@description": "{i18n>CountryCode.Description}",
+      "type": "cds.Association",
+      "target": "sap.common.Countries",
+      "keys": [
+        {
+          "ref": [
+            "code"
+          ]
+        }
+      ],
+      "@Common.Label": "{i18n>Country}",
+      "@Core.Description": "{i18n>CountryCode.Description}"
+    },
+    "sap.common": {
+      "kind": "context",
+      "doc": "Entities to serve the reuse types with extensible code lists\nincluding built-in support for value lists in Fiori."
+    },
+    "sap.common.Locale": {
+      "kind": "type",
+      "doc": "Type for a language code",
+      "@title": "{i18n>LanguageCode}",
+      "type": "cds.String",
+      "length": 14,
+      "@Common.Label": "{i18n>LanguageCode}"
+    },
+    "sap.common.Languages": {
+      "kind": "entity",
+      "doc": "Code list for languages\n\nSee https://cap.cloud.sap/docs/cds/common#entity-sapcommonlanguages",
+      "@cds.autoexpose": true,
+      "@cds.persistence.skip": "if-unused",
+      "@UI.Identification": [
+        {
+          "Value": {
+            "=": "name"
+          }
+        }
+      ],
+      "@cds.odata.valuelist": true,
+      "includes": [
+        "sap.common.CodeList"
+      ],
+      "elements": {
+        "name": {
+          "@title": "{i18n>Name}",
+          "localized": true,
+          "type": "cds.String",
+          "length": 255,
+          "@Common.Label": "{i18n>Name}"
+        },
+        "descr": {
+          "@title": "{i18n>Description}",
+          "localized": true,
+          "type": "cds.String",
+          "length": 1000,
+          "@Common.Label": "{i18n>Description}"
+        },
+        "code": {
+          "doc": "Type for a language code",
+          "@Common.Text": {
+            "=": "name"
+          },
+          "@title": "{i18n>LanguageCode}",
+          "key": true,
+          "type": "cds.String",
+          "length": 14,
+          "@Common.Label": "{i18n>LanguageCode}"
+        },
+        "texts": {
+          "type": "cds.Composition",
+          "cardinality": {
+            "max": "*"
+          },
+          "target": "sap.common.Languages.texts",
+          "on": [
+            {
+              "ref": [
+                "texts",
+                "code"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "code"
+              ]
+            }
+          ]
+        },
+        "localized": {
+          "type": "cds.Association",
+          "target": "sap.common.Languages.texts",
+          "on": [
+            {
+              "ref": [
+                "localized",
+                "code"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "code"
+              ]
+            },
+            "and",
+            {
+              "ref": [
+                "localized",
+                "locale"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "$user",
+                "locale"
+              ]
+            }
+          ]
+        }
+      },
+      "$localized": true
+    },
+    "sap.common.Countries": {
+      "kind": "entity",
+      "doc": "Code list for countries\n\nSee https://cap.cloud.sap/docs/cds/common#entity-sapcommoncountries",
+      "@cds.autoexpose": true,
+      "@cds.persistence.skip": "if-unused",
+      "@UI.Identification": [
+        {
+          "Value": {
+            "=": "name"
+          }
+        }
+      ],
+      "@cds.odata.valuelist": true,
+      "includes": [
+        "sap.common.CodeList"
+      ],
+      "elements": {
+        "name": {
+          "@title": "{i18n>Name}",
+          "localized": true,
+          "type": "cds.String",
+          "length": 255,
+          "@Common.Label": "{i18n>Name}"
+        },
+        "descr": {
+          "@title": "{i18n>Description}",
+          "localized": true,
+          "type": "cds.String",
+          "length": 1000,
+          "@Common.Label": "{i18n>Description}"
+        },
+        "code": {
+          "@title": "{i18n>CountryCode}",
+          "@Common.Text": {
+            "=": "name"
+          },
+          "key": true,
+          "type": "cds.String",
+          "length": 3,
+          "@Common.Label": "{i18n>CountryCode}"
+        },
+        "texts": {
+          "type": "cds.Composition",
+          "cardinality": {
+            "max": "*"
+          },
+          "target": "sap.common.Countries.texts",
+          "on": [
+            {
+              "ref": [
+                "texts",
+                "code"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "code"
+              ]
+            }
+          ]
+        },
+        "localized": {
+          "type": "cds.Association",
+          "target": "sap.common.Countries.texts",
+          "on": [
+            {
+              "ref": [
+                "localized",
+                "code"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "code"
+              ]
+            },
+            "and",
+            {
+              "ref": [
+                "localized",
+                "locale"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "$user",
+                "locale"
+              ]
+            }
+          ]
+        }
+      },
+      "$localized": true
+    },
+    "sap.common.Currencies": {
+      "kind": "entity",
+      "doc": "Code list for currencies\n\nSee https://cap.cloud.sap/docs/cds/common#entity-sapcommoncurrencies",
+      "@cds.autoexpose": true,
+      "@cds.persistence.skip": "if-unused",
+      "@UI.Identification": [
+        {
+          "Value": {
+            "=": "name"
+          }
+        }
+      ],
+      "@cds.odata.valuelist": true,
+      "includes": [
+        "sap.common.CodeList"
+      ],
+      "elements": {
+        "name": {
+          "@title": "{i18n>Name}",
+          "localized": true,
+          "type": "cds.String",
+          "length": 255,
+          "@Common.Label": "{i18n>Name}"
+        },
+        "descr": {
+          "@title": "{i18n>Description}",
+          "localized": true,
+          "type": "cds.String",
+          "length": 1000,
+          "@Common.Label": "{i18n>Description}"
+        },
+        "code": {
+          "@title": "{i18n>CurrencyCode}",
+          "@Common.Text": {
+            "=": "name"
+          },
+          "key": true,
+          "type": "cds.String",
+          "length": 3,
+          "@Common.Label": "{i18n>CurrencyCode}"
+        },
+        "symbol": {
+          "@title": "{i18n>CurrencySymbol}",
+          "type": "cds.String",
+          "length": 5,
+          "@Common.Label": "{i18n>CurrencySymbol}"
+        },
+        "minorUnit": {
+          "@title": "{i18n>CurrencyMinorUnit}",
+          "type": "cds.Int16",
+          "@Common.Label": "{i18n>CurrencyMinorUnit}"
+        },
+        "texts": {
+          "type": "cds.Composition",
+          "cardinality": {
+            "max": "*"
+          },
+          "target": "sap.common.Currencies.texts",
+          "on": [
+            {
+              "ref": [
+                "texts",
+                "code"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "code"
+              ]
+            }
+          ]
+        },
+        "localized": {
+          "type": "cds.Association",
+          "target": "sap.common.Currencies.texts",
+          "on": [
+            {
+              "ref": [
+                "localized",
+                "code"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "code"
+              ]
+            },
+            "and",
+            {
+              "ref": [
+                "localized",
+                "locale"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "$user",
+                "locale"
+              ]
+            }
+          ]
+        }
+      },
+      "$localized": true
+    },
+    "sap.common.CodeList": {
+      "kind": "aspect",
+      "doc": "Aspect for a code list with name and description\n\nSee https://cap.cloud.sap/docs/cds/common#aspect-sapcommoncodelist",
+      "@cds.autoexpose": true,
+      "@cds.persistence.skip": "if-unused",
+      "@UI.Identification": [
+        {
+          "Value": {
+            "=": "name"
+          }
+        }
+      ],
+      "@cds.odata.valuelist": true,
+      "elements": {
+        "name": {
+          "@title": "{i18n>Name}",
+          "localized": true,
+          "type": "cds.String",
+          "length": 255,
+          "@Common.Label": "{i18n>Name}"
+        },
+        "descr": {
+          "@title": "{i18n>Description}",
+          "localized": true,
+          "type": "cds.String",
+          "length": 1000,
+          "@Common.Label": "{i18n>Description}"
+        }
+      }
+    },
+    "sap.common.TextsAspect": {
+      "kind": "aspect",
+      "elements": {
+        "locale": {
+          "doc": "Type for a language code",
+          "@title": "{i18n>LanguageCode}",
+          "key": true,
+          "type": "cds.String",
+          "length": 14,
+          "@Common.Label": "{i18n>LanguageCode}"
+        }
+      }
+    },
+    "cuid": {
+      "kind": "aspect",
+      "doc": "Aspect for entities with canonical universal IDs\n\nSee https://cap.cloud.sap/docs/cds/common#aspect-cuid",
+      "elements": {
+        "ID": {
+          "key": true,
+          "type": "cds.UUID"
+        }
+      }
+    },
+    "managed": {
+      "kind": "aspect",
+      "doc": "Aspect to capture changes by user and name\n\nSee https://cap.cloud.sap/docs/cds/common#aspect-managed",
+      "elements": {
+        "createdAt": {
+          "@cds.on.insert": {
+            "=": "$now"
+          },
+          "@UI.HiddenFilter": true,
+          "@Core.Immutable": true,
+          "@title": "{i18n>CreatedAt}",
+          "@readonly": true,
+          "type": "cds.Timestamp",
+          "@Core.Computed": true,
+          "@Common.Label": "{i18n>CreatedAt}"
+        },
+        "createdBy": {
+          "doc": "Canonical user ID",
+          "@cds.on.insert": {
+            "=": "$user"
+          },
+          "@UI.HiddenFilter": true,
+          "@Core.Immutable": true,
+          "@title": "{i18n>CreatedBy}",
+          "@readonly": true,
+          "@description": "{i18n>UserID.Description}",
+          "type": "cds.String",
+          "length": 255,
+          "@Core.Computed": true,
+          "@Common.Label": "{i18n>CreatedBy}",
+          "@Core.Description": "{i18n>UserID.Description}"
+        },
+        "modifiedAt": {
+          "@cds.on.insert": {
+            "=": "$now"
+          },
+          "@cds.on.update": {
+            "=": "$now"
+          },
+          "@UI.HiddenFilter": true,
+          "@title": "{i18n>ChangedAt}",
+          "@readonly": true,
+          "type": "cds.Timestamp",
+          "@Core.Computed": true,
+          "@Common.Label": "{i18n>ChangedAt}"
+        },
+        "modifiedBy": {
+          "doc": "Canonical user ID",
+          "@cds.on.insert": {
+            "=": "$user"
+          },
+          "@cds.on.update": {
+            "=": "$user"
+          },
+          "@UI.HiddenFilter": true,
+          "@title": "{i18n>ChangedBy}",
+          "@readonly": true,
+          "@description": "{i18n>UserID.Description}",
+          "type": "cds.String",
+          "length": 255,
+          "@Core.Computed": true,
+          "@Common.Label": "{i18n>ChangedBy}",
+          "@Core.Description": "{i18n>UserID.Description}"
+        }
+      }
+    },
+    "temporal": {
+      "kind": "aspect",
+      "doc": "Aspect for entities with temporal data\n\nSee https://cap.cloud.sap/docs/cds/common#aspect-temporal",
+      "elements": {
+        "validFrom": {
+          "@cds.valid.from": true,
+          "type": "cds.Timestamp"
+        },
+        "validTo": {
+          "@cds.valid.to": true,
+          "type": "cds.Timestamp"
+        }
+      }
+    },
+    "User": {
+      "kind": "type",
+      "doc": "Canonical user ID",
+      "@title": "{i18n>UserID}",
+      "@description": "{i18n>UserID.Description}",
+      "type": "cds.String",
+      "length": 255,
+      "@Common.Label": "{i18n>UserID}",
+      "@Core.Description": "{i18n>UserID.Description}"
+    },
+    "extensible": {
+      "kind": "aspect",
+      "doc": "Aspects for extensible entities.",
+      "elements": {
+        "extensions__": {
+          "@cds.api.ignore": true,
+          "type": "cds.String"
+        }
+      }
+    },
+    "sap.common.Languages.texts": {
+      "kind": "entity",
+      "@odata.draft.enabled": false,
+      "includes": [
+        "sap.common.TextsAspect"
+      ],
+      "elements": {
+        "locale": {
+          "doc": "Type for a language code",
+          "@title": "{i18n>LanguageCode}",
+          "key": true,
+          "type": "cds.String",
+          "length": 14,
+          "@Common.Label": "{i18n>LanguageCode}"
+        },
+        "name": {
+          "@title": "{i18n>Name}",
+          "localized": null,
+          "type": "cds.String",
+          "length": 255,
+          "@Common.Label": "{i18n>Name}"
+        },
+        "descr": {
+          "@title": "{i18n>Description}",
+          "localized": null,
+          "type": "cds.String",
+          "length": 1000,
+          "@Common.Label": "{i18n>Description}"
+        },
+        "code": {
+          "doc": "Type for a language code",
+          "@odata.containment.ignore": true,
+          "@Common.Text": {
+            "=": "name"
+          },
+          "@title": "{i18n>LanguageCode}",
+          "key": true,
+          "type": "cds.String",
+          "length": 14,
+          "@Common.Label": "{i18n>LanguageCode}"
+        }
+      }
+    },
+    "sap.common.Countries.texts": {
+      "kind": "entity",
+      "@odata.draft.enabled": false,
+      "includes": [
+        "sap.common.TextsAspect"
+      ],
+      "elements": {
+        "locale": {
+          "doc": "Type for a language code",
+          "@title": "{i18n>LanguageCode}",
+          "key": true,
+          "type": "cds.String",
+          "length": 14,
+          "@Common.Label": "{i18n>LanguageCode}"
+        },
+        "name": {
+          "@title": "{i18n>Name}",
+          "localized": null,
+          "type": "cds.String",
+          "length": 255,
+          "@Common.Label": "{i18n>Name}"
+        },
+        "descr": {
+          "@title": "{i18n>Description}",
+          "localized": null,
+          "type": "cds.String",
+          "length": 1000,
+          "@Common.Label": "{i18n>Description}"
+        },
+        "code": {
+          "@odata.containment.ignore": true,
+          "@title": "{i18n>CountryCode}",
+          "@Common.Text": {
+            "=": "name"
+          },
+          "key": true,
+          "type": "cds.String",
+          "length": 3,
+          "@Common.Label": "{i18n>CountryCode}"
+        }
+      }
+    },
+    "sap.common.Currencies.texts": {
+      "kind": "entity",
+      "@odata.draft.enabled": false,
+      "includes": [
+        "sap.common.TextsAspect"
+      ],
+      "elements": {
+        "locale": {
+          "doc": "Type for a language code",
+          "@title": "{i18n>LanguageCode}",
+          "key": true,
+          "type": "cds.String",
+          "length": 14,
+          "@Common.Label": "{i18n>LanguageCode}"
+        },
+        "name": {
+          "@title": "{i18n>Name}",
+          "localized": null,
+          "type": "cds.String",
+          "length": 255,
+          "@Common.Label": "{i18n>Name}"
+        },
+        "descr": {
+          "@title": "{i18n>Description}",
+          "localized": null,
+          "type": "cds.String",
+          "length": 1000,
+          "@Common.Label": "{i18n>Description}"
+        },
+        "code": {
+          "@odata.containment.ignore": true,
+          "@title": "{i18n>CurrencyCode}",
+          "@Common.Text": {
+            "=": "name"
+          },
+          "key": true,
+          "type": "cds.String",
+          "length": 3,
+          "@Common.Label": "{i18n>CurrencyCode}"
+        }
+      }
+    },
+    "DRAFT.DraftAdministrativeData": {
+      "kind": "entity",
+      "elements": {
+        "DraftUUID": {
+          "type": "cds.UUID",
+          "key": true,
+          "@UI.Hidden": true,
+          "@Common.Label": "{i18n>Draft_DraftUUID}"
+        },
+        "CreationDateTime": {
+          "type": "cds.Timestamp",
+          "@Common.Label": "{i18n>Draft_CreationDateTime}"
+        },
+        "CreatedByUser": {
+          "type": "cds.String",
+          "length": 256,
+          "@Common.Label": "{i18n>Draft_CreatedByUser}"
+        },
+        "DraftIsCreatedByMe": {
+          "type": "cds.Boolean",
+          "@UI.Hidden": true,
+          "@Common.Label": "{i18n>Draft_DraftIsCreatedByMe}"
+        },
+        "LastChangeDateTime": {
+          "type": "cds.Timestamp",
+          "@Common.Label": "{i18n>Draft_LastChangeDateTime}"
+        },
+        "LastChangedByUser": {
+          "type": "cds.String",
+          "length": 256,
+          "@Common.Label": "{i18n>Draft_LastChangedByUser}"
+        },
+        "InProcessByUser": {
+          "type": "cds.String",
+          "length": 256,
+          "@Common.Label": "{i18n>Draft_InProcessByUser}"
+        },
+        "DraftIsProcessedByMe": {
+          "type": "cds.Boolean",
+          "@UI.Hidden": true,
+          "@Common.Label": "{i18n>Draft_DraftIsProcessedByMe}"
+        }
+      },
+      "@Common.Label": "{i18n>Draft_DraftAdministrativeData}"
+    },
+    "MUService.DraftAdministrativeData": {
+      "kind": "entity",
+      "projection": {
+        "from": {
+          "ref": [
+            "DRAFT.DraftAdministrativeData"
+          ]
+        }
+      },
+      "elements": {
+        "DraftUUID": {
+          "type": "cds.UUID",
+          "key": true,
+          "@UI.Hidden": true,
+          "@Common.Label": "{i18n>Draft_DraftUUID}"
+        },
+        "CreationDateTime": {
+          "type": "cds.Timestamp",
+          "@Common.Label": "{i18n>Draft_CreationDateTime}"
+        },
+        "CreatedByUser": {
+          "type": "cds.String",
+          "length": 256,
+          "@Common.Label": "{i18n>Draft_CreatedByUser}"
+        },
+        "DraftIsCreatedByMe": {
+          "type": "cds.Boolean",
+          "@UI.Hidden": true,
+          "@Common.Label": "{i18n>Draft_DraftIsCreatedByMe}"
+        },
+        "LastChangeDateTime": {
+          "type": "cds.Timestamp",
+          "@Common.Label": "{i18n>Draft_LastChangeDateTime}"
+        },
+        "LastChangedByUser": {
+          "type": "cds.String",
+          "length": 256,
+          "@Common.Label": "{i18n>Draft_LastChangedByUser}"
+        },
+        "InProcessByUser": {
+          "type": "cds.String",
+          "length": 256,
+          "@Common.Label": "{i18n>Draft_InProcessByUser}"
+        },
+        "DraftIsProcessedByMe": {
+          "type": "cds.Boolean",
+          "@UI.Hidden": true,
+          "@Common.Label": "{i18n>Draft_DraftIsProcessedByMe}"
+        }
+      },
+      "@Common.Label": "{i18n>Draft_DraftAdministrativeData}"
+    }
+  },
+  "extensions": [
+    {
+      "annotate": "Reviews",
+      "@restrict": [
+        {
+          "grant": "READ",
+          "to": "any"
+        },
+        {
+          "grant": "CREATE",
+          "to": "authenticated-user"
+        }
+      ]
+    }
+  ],
+  "$version": "2.0",
+  "meta": {
+    "creator": "CDS Compiler v3.9.2",
+    "flavor": "inferred"
+  }
+}
